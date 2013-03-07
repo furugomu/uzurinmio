@@ -1,0 +1,13 @@
+{
+  "name": "uzurinmio",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "coffee-script": "*",
+    "socket.io": "*",
+    "express": "3.1.0"
+  }
+}
