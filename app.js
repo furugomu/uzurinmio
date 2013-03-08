@@ -27,15 +27,15 @@
   data = [
     {
       name: 'm',
-      value: 1,
+      value: 100,
       color: '#FFF280'
     }, {
       name: 'r',
-      value: 1,
+      value: 100,
       color: '#6EB7DB'
     }, {
       name: 'u',
-      value: 1,
+      value: 100,
       color: '#DB7BB1'
     }
   ];
@@ -54,12 +54,21 @@
   io.sockets.on("connection", function(socket) {
     socket.emit("update", data);
     return socket.on("increase", function(name) {
-      var x;
-      x = get(name);
-      if (x) {
-        x.value += 1;
-        return io.sockets.emit("increased", name);
+      var x, _i, _len;
+      if (!get(name)) {
+        return;
       }
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        x = data[_i];
+        if (x.name === name) {
+          x.value += 2;
+        } else {
+          if (x.value > 0) {
+            x.value -= 1;
+          }
+        }
+      }
+      return io.sockets.emit("update", data);
     });
   });
 

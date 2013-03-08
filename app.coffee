@@ -17,9 +17,9 @@ server.listen app.get('port'), ->
 ##
 
 data = [
-  {name: 'm', value: 1, color: '#FFF280'},
-  {name: 'r', value: 1, color: '#6EB7DB'},
-  {name: 'u', value: 1, color: '#DB7BB1'},
+  {name: 'm', value: 100, color: '#FFF280'},
+  {name: 'r', value: 100, color: '#6EB7DB'},
+  {name: 'u', value: 100, color: '#DB7BB1'},
 ]
 
 get = (name) ->
@@ -30,12 +30,15 @@ get = (name) ->
 io.sockets.on "connection", (socket) ->
   socket.emit("update", data)
   socket.on "increase", (name) ->
-    x = get(name)
-    if x
-      x.value += 1
-      io.sockets.emit("increased", name)
+    return unless get(name)
+    for x in data
+      if x.name == name
+        x.value += 2
+      else
+        x.value -= 1 if x.value > 0
+    io.sockets.emit("update", data)
 
-# hroku
+# heroku
 io.configure ->
   io.set("transports", ["xhr-polling"])
   io.set("polling duration", 10)
